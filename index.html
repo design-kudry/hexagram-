@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Монеты → Гексаграмма</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <h1 class="title">hexagram studio</h1>
+      </header>
+
+      <section class="cast-layout">
+        <div class="cast-left">
+          <section class="coin-stage" aria-label="Монеты">
+            <div class="coins" id="coins">
+              <div class="coin" data-state="heads"><span>О</span></div>
+              <div class="coin" data-state="heads"><span>О</span></div>
+              <div class="coin" data-state="heads"><span>О</span></div>
+            </div>
+          </section>
+
+          <div class="controls">
+            <button id="tossBtn" class="btn" type="button">Подкинуть</button>
+          </div>
+        </div>
+
+        <div class="hex-wrap">
+          <div id="hexagram" class="hexagram" aria-label="Гексаграмма" role="img"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
+
