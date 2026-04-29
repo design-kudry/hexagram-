@@ -6,6 +6,7 @@ const COIN_IMAGE_CANDIDATES = {
 };
 
 const tossBtn = document.getElementById("tossBtn");
+const resetBtn = document.getElementById("resetBtn");
 const hexagramEl = document.getElementById("hexagram");
 const coinsEl = document.getElementById("coins");
 const coinNodes = [...coinsEl.querySelectorAll(".coin")];
@@ -116,6 +117,7 @@ function renderCoins(coinResults) {
 
 async function animateCoins() {
   tossBtn.disabled = true;
+  resetBtn.disabled = true;
   const line = makeLine();
 
   const animations = coinNodes.map((coin, idx) => {
@@ -162,6 +164,7 @@ async function animateCoins() {
   await Promise.allSettled(animations);
   renderCoins(line.coinResults);
   tossBtn.disabled = false;
+  resetBtn.disabled = false;
   return line;
 }
 
@@ -292,8 +295,8 @@ let lines = [];
 
 function reset() {
   lines = [];
-  tossBtn.textContent = "Drop it off";
   tossBtn.disabled = false;
+  resetBtn.disabled = false;
   renderCoins([true, true, true]);
   renderHexagram(lines);
   hideReading();
@@ -308,13 +311,16 @@ async function runToss() {
   renderHexagram(lines);
   renderReading(lines);
 
-  if (lines.length === LINES) tossBtn.textContent = "Reset";
 }
 
 tossBtn.addEventListener("click", async () => {
   if (tossBtn.disabled) return;
-  if (tossBtn.textContent === "Reset") reset();
-  else await runToss();
+  await runToss();
+});
+
+resetBtn.addEventListener("click", () => {
+  if (resetBtn.disabled) return;
+  reset();
 });
 
 // Начальная отрисовка, чтобы было что смотреть сразу.
