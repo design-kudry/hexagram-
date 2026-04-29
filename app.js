@@ -92,26 +92,74 @@ function renderCoins(coinResults) {
   coinNodes.forEach((coin, idx) => {
     const isHeads = coinResults[idx];
     coin.dataset.state = isHeads ? "heads" : "tails";
-    const marker = coin.querySelector("span");
-    marker.textContent = isHeads ? "О" : "Р";
+    const frontFace = coin.querySelector(".coin-front");
+    const backFace = coin.querySelector(".coin-back");
+    const inner = coin.querySelector(".coin-inner");
 
     if (coinAssets) {
-      coin.classList.add("has-image");
-      coin.style.backgroundImage = `url("${isHeads ? coinAssets.heads : coinAssets.tails}")`;
+      frontFace.textContent = "";
+      backFace.textContent = "";
+      frontFace.style.backgroundImage = `url("${coinAssets.heads}")`;
+      backFace.style.backgroundImage = `url("${coinAssets.tails}")`;
     } else {
-      coin.classList.remove("has-image");
-      coin.style.backgroundImage = "none";
+      frontFace.textContent = "О";
+      backFace.textContent = "Р";
+      frontFace.style.backgroundImage = "none";
+      backFace.style.backgroundImage = "none";
     }
+
+    const snapAngle = isHeads ? 0 : 180;
+    inner.style.transform = `rotateX(6deg) rotateY(${snapAngle}deg)`;
+    coin.dataset.angle = String(snapAngle);
   });
 }
 
 async function animateCoins() {
   tossBtn.disabled = true;
-  coinNodes.forEach((coin) => coin.classList.add("spinning"));
-  await delay(1200);
-
   const line = makeLine();
-  coinNodes.forEach((coin) => coin.classList.remove("spinning"));
+
+  const animations = coinNodes.map((coin, idx) => {
+    const isHeads = line.coinResults[idx];
+    const currentAngle = Number(coin.dataset.angle || 0);
+    const currentMod = ((currentAngle % 360) + 360) % 360;
+    const targetMod = isHeads ? 0 : 180;
+    // Рандомное число полных оборотов делает вращение живым,
+    // а финиш всё равно принудительно доводим до нужной стороны.
+    const randomTurns = 3 + Math.floor(Math.random() * 5); // 3..7
+    const extraTurns = randomTurns * 360;
+    const deltaToTarget = (targetMod - ((currentMod + extraTurns) % 360) + 360) % 360;
+    const finalAngle = currentAngle + extraTurns + deltaToTarget;
+    const duration = 560 + Math.floor(Math.random() * 240); // 560..799ms
+
+    coin.classList.add("is-spinning");
+    const inner = coin.querySelector(".coin-inner");
+
+    const anim = inner.animate(
+      [
+        { transform: `rotateX(8deg) rotateY(${currentAngle}deg) rotateZ(0deg)` },
+        { transform: `rotateX(6deg) rotateY(${finalAngle}deg) rotateZ(${idx % 2 === 0 ? -1 : 1}deg)` },
+      ],
+      {
+        duration,
+        easing: "cubic-bezier(0.15, 0.75, 0.2, 1)",
+        fill: "forwards",
+      }
+    );
+
+    return anim.finished.then(() => {
+      const normalized = targetMod;
+      inner.style.transform = `rotateX(6deg) rotateY(${normalized}deg)`;
+      coin.dataset.angle = String(normalized);
+      coin.classList.remove("is-spinning");
+    }).catch(() => {
+      // Если анимация была прервана, аккуратно возвращаем монету в валидное состояние.
+      inner.style.transform = `rotateX(6deg) rotateY(${targetMod}deg)`;
+      coin.dataset.angle = String(targetMod);
+      coin.classList.remove("is-spinning");
+    });
+  });
+
+  await Promise.allSettled(animations);
   renderCoins(line.coinResults);
   tossBtn.disabled = false;
   return line;
