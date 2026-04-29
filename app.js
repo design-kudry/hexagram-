@@ -9,9 +9,29 @@ const tossBtn = document.getElementById("tossBtn");
 const hexagramEl = document.getElementById("hexagram");
 const coinsEl = document.getElementById("coins");
 const coinNodes = [...coinsEl.querySelectorAll(".coin")];
+const readingEl = document.getElementById("reading");
+const readingMetaEl = document.getElementById("readingMeta");
+const readingTitleEl = document.getElementById("readingTitle");
+const readingForecastEl = document.getElementById("readingForecast");
+const readingLarichevEl = document.getElementById("readingLarichev");
+const readingAphorismEl = document.getElementById("readingAphorism");
+const readingCommentaryEl = document.getElementById("readingCommentary");
+
+const KING_WEN_BY_BINARY = {
+  "111111": 1, "000000": 2, "100010": 3, "010001": 4, "111010": 5, "010111": 6, "010000": 7, "000010": 8,
+  "111011": 9, "110111": 10, "111000": 11, "000111": 12, "101111": 13, "111101": 14, "001000": 15, "000100": 16,
+  "100110": 17, "011001": 18, "110000": 19, "000011": 20, "100101": 21, "101001": 22, "000001": 23, "100000": 24,
+  "100111": 25, "111001": 26, "100001": 27, "011110": 28, "010010": 29, "101101": 30, "001110": 31, "011100": 32,
+  "001111": 33, "111100": 34, "000101": 35, "101000": 36, "101011": 37, "110101": 38, "001010": 39, "010100": 40,
+  "110001": 41, "100011": 42, "111110": 43, "011111": 44, "000110": 45, "011000": 46, "010110": 47, "011010": 48,
+  "101110": 49, "011101": 50, "100100": 51, "001001": 52, "001011": 53, "110100": 54, "101100": 55, "001101": 56,
+  "011011": 57, "110110": 58, "010011": 59, "110010": 60, "110011": 61, "001100": 62, "101010": 63, "010101": 64,
+};
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 let coinAssets = null;
+let hexagramLookup = null;
+let larichevLookup = null;
 
 function tryLoadImage(src) {
   return new Promise((resolve) => {
@@ -88,7 +108,7 @@ function renderCoins(coinResults) {
 async function animateCoins() {
   tossBtn.disabled = true;
   coinNodes.forEach((coin) => coin.classList.add("spinning"));
-  await delay(900);
+  await delay(1200);
 
   const line = makeLine();
   coinNodes.forEach((coin) => coin.classList.remove("spinning"));
@@ -136,14 +156,99 @@ function renderHexagram(lines) {
   }
 }
 
+function hideReading() {
+  readingEl.classList.add("hidden");
+}
+
+function getBinarySignature(lines) {
+  // В бинарной сигнатуре используем порядок снизу вверх (line1 -> line6).
+  return lines.map((line) => (line.solid ? "1" : "0")).join("");
+}
+
+function resolveLookupFromSource(source) {
+  const match = source.match(/const\s+HEXAGRAMS\s*=\s*(\{[\s\S]*?\n\});\s*export\s+default/);
+  if (!match) return null;
+  try {
+    return new Function(`return (${match[1]});`)();
+  } catch {
+    return null;
+  }
+}
+
+function resolveLarichevFromSource(source) {
+  const match = source.match(/const\s+LARICHEV\s*=\s*(\{[\s\S]*?\n\});\s*\n\s*const\s+TANAKA/);
+  if (!match) return null;
+  try {
+    return new Function(`return (${match[1]});`)();
+  } catch {
+    return null;
+  }
+}
+
+async function loadLookupData() {
+  if (window.HEXAGRAMS && typeof window.HEXAGRAMS === "object") {
+    return window.HEXAGRAMS;
+  }
+  try {
+    const response = await fetch("./iching_lookup.jsx");
+    if (!response.ok) return null;
+    const source = await response.text();
+    return resolveLookupFromSource(source);
+  } catch {
+    return null;
+  }
+}
+
+async function loadLarichevData() {
+  if (window.LARICHEV && typeof window.LARICHEV === "object") {
+    return window.LARICHEV;
+  }
+  try {
+    const response = await fetch("./publication.jsx");
+    if (!response.ok) return null;
+    const source = await response.text();
+    return resolveLarichevFromSource(source);
+  } catch {
+    return null;
+  }
+}
+
+function renderReading(lines) {
+  if (!hexagramLookup || lines.length !== LINES) {
+    hideReading();
+    return;
+  }
+
+  const binary = getBinarySignature(lines);
+  const number = KING_WEN_BY_BINARY[binary];
+  const entry = number ? hexagramLookup[number] : null;
+
+  if (!entry) {
+    hideReading();
+    return;
+  }
+
+  const cleanForecast = (entry.forecast || "").replace(/[\p{Extended_Pictographic}\uFE0F]/gu, "").trim();
+  const larichevText = larichevLookup?.[number] || "";
+
+  readingMetaEl.textContent = `Гексаграмма ${number} · ${entry.symbol} · ${entry.chinese}`;
+  readingTitleEl.textContent = entry.name;
+  readingForecastEl.textContent = cleanForecast;
+  readingLarichevEl.textContent = larichevText;
+  readingAphorismEl.textContent = entry.aphorism || "";
+  readingCommentaryEl.textContent = entry.commentary || "";
+  readingEl.classList.remove("hidden");
+}
+
 let lines = [];
 
 function reset() {
   lines = [];
-  tossBtn.textContent = "Подкинуть";
+  tossBtn.textContent = "Drop it off";
   tossBtn.disabled = false;
   renderCoins([true, true, true]);
   renderHexagram(lines);
+  hideReading();
 }
 
 async function runToss() {
@@ -153,18 +258,21 @@ async function runToss() {
   const newLine = await animateCoins();
   lines.push(newLine);
   renderHexagram(lines);
+  renderReading(lines);
 
-  if (lines.length === LINES) tossBtn.textContent = "Сбросить";
+  if (lines.length === LINES) tossBtn.textContent = "Reset";
 }
 
 tossBtn.addEventListener("click", async () => {
   if (tossBtn.disabled) return;
-  if (tossBtn.textContent === "Сбросить") reset();
+  if (tossBtn.textContent === "Reset") reset();
   else await runToss();
 });
 
 // Начальная отрисовка, чтобы было что смотреть сразу.
 (async function init() {
+  hexagramLookup = await loadLookupData();
+  larichevLookup = await loadLarichevData();
   coinAssets = await resolveCoinAssets();
   reset();
 })();

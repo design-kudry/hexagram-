@@ -15,19 +15,19 @@ body{
 }
 
 .app{
-  max-width: 1180px;
-  margin: 36px auto;
-  padding: 0 28px 36px;
+  max-width: 1120px;
+  margin: 72px auto;
+  padding: 0 24px 48px;
 }
 
 .hero{
-  margin-bottom: 24px;
+  margin-bottom: 64px;
 }
 
 .title{
   margin: 0;
-  font-size: clamp(48px, 11vw, 150px);
-  line-height: 0.95;
+  font-size: clamp(56px, 8.3vw, 120px);
+  line-height: 0.9;
   font-weight: 500;
   text-transform: lowercase;
   letter-spacing: -0.02em;
@@ -36,31 +36,30 @@ body{
 
 .cast-layout{
   display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 80px;
-  align-items: center;
-  margin-bottom: 12px;
+  grid-template-columns: 1fr 194px;
+  gap: 72px;
+  align-items: start;
 }
 
 .cast-left{
-  max-width: 620px;
+  max-width: 680px;
 }
 
 .coin-stage{
-  margin-bottom: 64px;
+  margin-bottom: 100px;
 }
 
 .coins{
   display: flex;
-  gap: 26px;
+  gap: 30px;
 }
 
 .coin{
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  border: 1.5px solid #101010;
-  background: #ffffff;
+  width: 194px;
+  height: 194px;
+  border-radius: 0;
+  border: 0;
+  background: transparent;
   color: #101010;
   display: grid;
   place-items: center;
@@ -68,12 +67,14 @@ body{
   font-weight: 500;
   user-select: none;
   background-position: center;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
 }
 
 .coin > span{
   line-height: 1;
+  font-size: 22px;
+  opacity: 0.35;
 }
 
 .coin.has-image{
@@ -85,13 +86,13 @@ body{
 }
 
 .coin.spinning{
-  animation: spinCoin 340ms linear infinite;
+  animation: spinCoin 900ms cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
 }
 
 @keyframes spinCoin{
-  0% { transform: rotateY(0deg) translateY(0); }
-  50% { transform: rotateY(90deg) translateY(-4px); }
-  100% { transform: rotateY(180deg) translateY(0); }
+  0% { transform: rotateY(0deg); }
+  50% { transform: rotateY(180deg); }
+  100% { transform: rotateY(360deg); }
 }
 
 .controls{
@@ -101,12 +102,12 @@ body{
 .btn{
   appearance: none;
   border: 0;
-  border-radius: 10px;
+  border-radius: 0;
   width: 152px;
   height: 48px;
   padding: 0 12px;
   font-size: 17px;
-  font-family: "SF Pro Text", "SF Pro Display", -apple-system, "Helvetica Neue", "Inter", Arial, sans-serif;
+  font-family: "Helvetica Neue", "Inter", Arial, sans-serif;
   font-weight: 400;
   line-height: 22px;
   color: #ffffff;
@@ -126,9 +127,9 @@ body{
 }
 
 .hexagram{
-  width: 290px;
-  height: 360px;
-  padding: 18px 14px;
+  width: 194px;
+  height: 194px;
+  padding: 0;
   background: transparent;
 
   display: flex;
@@ -136,18 +137,75 @@ body{
   justify-content: space-between;
 }
 
+.reading{
+  margin-top: 24px;
+  max-width: 980px;
+  border-top: 1px solid #d8d8d8;
+  padding-top: 20px;
+}
+
+.reading.hidden{
+  display: none;
+}
+
+.reading-head{
+  margin-bottom: 8px;
+}
+
+.reading-meta{
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #5e5e5e;
+}
+
+.reading-title{
+  margin: 0;
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.reading-forecast{
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #3f3f3f;
+}
+
+.reading-source{
+  margin: 16px 0 8px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: #5a5a5a;
+}
+
+.reading-aphorism{
+  margin: 0 0 12px;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.reading-commentary{
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.58;
+  color: #202020;
+}
+
 .line{
   position: relative;
-  height: 36px;
+  height: 10px;
   display: flex;
   align-items: center;
 }
 
 .line.empty{
-  opacity: 0.16;
-  border-top: 1px solid #101010;
-  height: 1px;
-  margin-top: 14px;
+  opacity: 0.24;
+  border-top: 10px solid #101010;
+  height: 10px;
+  margin-top: 0;
 }
 
 .solid{
@@ -174,20 +232,20 @@ body{
 
 @media (max-width: 860px){
   .app{
-    max-width: 390px;
-    margin: 0 auto;
-    padding: 16px 16px 24px;
+    max-width: 430px;
+    margin: 20px auto 0;
+    padding: 16px 16px 28px;
   }
   .hero{
-    margin-bottom: 16px;
+    margin-bottom: 48px;
   }
   .title{
-    font-size: clamp(42px, 14vw, 62px);
+    font-size: clamp(44px, 13.8vw, 72px);
     letter-spacing: -0.015em;
   }
   .cast-layout{
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 48px;
     align-items: start;
   }
   .cast-left{
@@ -195,21 +253,20 @@ body{
     width: 100%;
   }
   .coin-stage{
-    margin-bottom: 16px;
+    margin-bottom: 48px;
     width: 100%;
   }
   .coins{
     width: 100%;
-    max-width: 360px;
+    max-width: 400px;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
   }
   .coin{
     width: 100%;
-    max-width: 112px;
-    aspect-ratio: 1 / 1;
-    height: auto;
+    max-width: 126px;
+    height: 126px;
     justify-self: center;
   }
   .controls{
@@ -219,24 +276,39 @@ body{
   .btn{
     width: 152px;
     max-width: 152px;
+    font-size: 16px;
   }
   .hex-wrap{
-    justify-self: start;
+    justify-self: center;
     width: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
   }
   .hexagram{
-    width: min(100%, 290px);
-    height: 320px;
-    padding: 12px 10px;
+    width: 126px;
+    height: 126px;
+    padding: 0;
   }
   .line{
-    height: 30px;
+    height: 10px;
   }
   .solid,
   .broken{
-    height: 8px;
+    height: 10px;
+  }
+  .reading{
+    margin-top: 26px;
+    padding-top: 18px;
+  }
+  .reading-title{
+    font-size: 42px;
+  }
+  .reading-meta{
+    font-size: 17px;
+  }
+  .reading-aphorism,
+  .reading-commentary{
+    font-size: 17px;
   }
 }
 

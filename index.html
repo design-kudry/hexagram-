@@ -23,7 +23,7 @@
           </section>
 
           <div class="controls">
-            <button id="tossBtn" class="btn" type="button">Подкинуть</button>
+            <button id="tossBtn" class="btn" type="button">Drop it off</button>
           </div>
         </div>
 
@@ -31,8 +31,25 @@
           <div id="hexagram" class="hexagram" aria-label="Гексаграмма" role="img"></div>
         </div>
       </section>
+
+      <section id="reading" class="reading hidden" aria-live="polite">
+        <div class="reading-head">
+          <p id="readingMeta" class="reading-meta"></p>
+          <h2 id="readingTitle" class="reading-title"></h2>
+        </div>
+        <p id="readingForecast" class="reading-forecast"></p>
+
+        <p class="reading-source">LARICHEV</p>
+        <p id="readingLarichev" class="reading-commentary"></p>
+
+        <p class="reading-source">TANAKA</p>
+        <p id="readingAphorism" class="reading-aphorism"></p>
+        <p id="readingCommentary" class="reading-commentary"></p>
+      </section>
     </main>
 
+    <script src="./larichev_data.js"></script>
+    <script src="./iching_data.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>
