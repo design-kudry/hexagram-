@@ -12,8 +12,6 @@ const coinsEl = document.getElementById("coins");
 const coinNodes = [...coinsEl.querySelectorAll(".coin")];
 const readingEl = document.getElementById("reading");
 const readingMetaEl = document.getElementById("readingMeta");
-const readingTitleEl = document.getElementById("readingTitle");
-const readingForecastEl = document.getElementById("readingForecast");
 const readingLarichevEl = document.getElementById("readingLarichev");
 const readingAphorismEl = document.getElementById("readingAphorism");
 const readingCommentaryEl = document.getElementById("readingCommentary");
@@ -279,12 +277,9 @@ function renderReading(lines) {
     return;
   }
 
-  const cleanForecast = (entry.forecast || "").replace(/[\p{Extended_Pictographic}\uFE0F]/gu, "").trim();
   const larichevText = larichevLookup?.[number] || "";
 
   readingMetaEl.textContent = `Гексаграмма ${number} · ${entry.symbol} · ${entry.chinese}`;
-  readingTitleEl.textContent = entry.name;
-  readingForecastEl.textContent = cleanForecast;
   readingLarichevEl.textContent = larichevText;
   readingAphorismEl.textContent = entry.aphorism || "";
   readingCommentaryEl.textContent = entry.commentary || "";
@@ -303,14 +298,21 @@ function reset() {
 }
 
 async function runToss() {
-  // Каждое нажатие добавляет 1 линию (3 монеты по правилу большинства).
-  if (lines.length >= LINES) return;
+  // Один клик запускает полный цикл из 6 бросков подряд.
+  if (tossBtn.disabled || resetBtn.disabled) return;
 
-  const newLine = await animateCoins();
-  lines.push(newLine);
+  lines = [];
   renderHexagram(lines);
-  renderReading(lines);
+  hideReading();
 
+  for (let step = 0; step < LINES; step++) {
+    const newLine = await animateCoins();
+    lines.push(newLine);
+    renderHexagram(lines);
+    if (step < LINES - 1) await delay(380);
+  }
+
+  renderReading(lines);
 }
 
 tossBtn.addEventListener("click", async () => {
