@@ -114,8 +114,6 @@ function renderCoins(coinResults) {
 }
 
 async function animateCoins() {
-  tossBtn.disabled = true;
-  resetBtn.disabled = true;
   const line = makeLine();
 
   const animations = coinNodes.map((coin, idx) => {
@@ -161,8 +159,6 @@ async function animateCoins() {
 
   await Promise.allSettled(animations);
   renderCoins(line.coinResults);
-  tossBtn.disabled = false;
-  resetBtn.disabled = false;
   return line;
 }
 
@@ -298,8 +294,10 @@ function reset() {
 }
 
 async function runToss() {
-  // Один клик запускает полный цикл из 6 бросков подряд.
   if (tossBtn.disabled || resetBtn.disabled) return;
+
+  tossBtn.disabled = true;
+  resetBtn.disabled = true;
 
   lines = [];
   renderHexagram(lines);
@@ -313,6 +311,9 @@ async function runToss() {
   }
 
   renderReading(lines);
+
+  tossBtn.disabled = false;
+  resetBtn.disabled = false;
 }
 
 tossBtn.addEventListener("click", async () => {
