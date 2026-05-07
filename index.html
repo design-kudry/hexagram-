@@ -1,77 +1,69 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>hexagram studio</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png" />
-    <link rel="icon" href="./favicons/favicon.ico" />
-    <link rel="manifest" href="./favicons/site.webmanifest" />
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <main class="app">
-      <header class="hero">
-        <h1 class="title">hexagram studio</h1>
-        <p class="subtitle">Задай вопрос и получи знак</p>
-      </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>hexagram studio · 3D монеты</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png" />
+  <link rel="icon" href="./favicons/favicon.ico" />
+  <link rel="manifest" href="./favicons/site.webmanifest" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <h1 class="title">hexagram studio</h1>
+      <p class="subtitle">Задай вопрос и получи знак</p>
+    </header>
 
-      <section class="cast-layout">
-        <div class="cast-left">
-          <section class="coin-stage" aria-label="Монеты">
-            <div class="coins" id="coins">
-              <div class="coin" data-state="heads">
-                <div class="coin-inner">
-                  <div class="coin-face coin-front">О</div>
-                  <div class="coin-face coin-back">Р</div>
-                </div>
-              </div>
-              <div class="coin" data-state="heads">
-                <div class="coin-inner">
-                  <div class="coin-face coin-front">О</div>
-                  <div class="coin-face coin-back">Р</div>
-                </div>
-              </div>
-              <div class="coin" data-state="heads">
-                <div class="coin-inner">
-                  <div class="coin-face coin-front">О</div>
-                  <div class="coin-face coin-back">Р</div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <div class="controls">
-            <button id="tossBtn" class="btn" type="button">Drop it off</button>
-            <button id="resetBtn" class="btn btn-secondary" type="button">Reset</button>
+    <section class="cast-layout">
+      <div class="cast-left">
+        <section class="coin-stage" aria-label="Монеты">
+          <div class="coins" id="coinsContainer">
+            <!-- 3D-монеты будут добавлены сюда через JS -->
           </div>
-        </div>
+        </section>
 
-        <div class="hex-wrap">
-          <div id="hexagram" class="hexagram" aria-label="Гексаграмма" role="img"></div>
+        <div class="controls">
+          <button id="tossBtn" class="btn" type="button">Drop it off</button>
+          <button id="resetBtn" class="btn btn-secondary" type="button">Reset</button>
         </div>
-      </section>
+      </div>
 
-      <section id="reading" class="reading hidden" aria-live="polite">
-        <div class="reading-head">
-          <p id="readingMeta" class="reading-meta"></p>
-        </div>
-        <div class="reading-content">
-          <p class="reading-source">LARICHEV</p>
-          <p id="readingLarichev" class="reading-commentary"></p>
+      <div class="hex-wrap">
+        <div id="hexagram" class="hexagram" aria-label="Гексаграмма" role="img"></div>
+      </div>
+    </section>
 
-          <p class="reading-source">TANAKA</p>
-          <p id="readingAphorism" class="reading-aphorism"></p>
-          <p id="readingCommentary" class="reading-commentary"></p>
-        </div>
-      </section>
-    </main>
+    <section id="reading" class="reading hidden" aria-live="polite">
+      <div class="reading-head">
+        <p id="readingMeta" class="reading-meta"></p>
+      </div>
+      <div class="reading-content">
+        <p class="reading-source">ЛАРИЧЕВ</p>
+        <p id="readingLarichev" class="reading-commentary"></p>
 
-    <script src="./larichev_data.js"></script>
-    <script src="./iching_data.js"></script>
-    <script src="./app.js"></script>
-  </body>
+        <p class="reading-source">ТАНАКА</p>
+        <p id="readingAphorism" class="reading-aphorism"></p>
+        <p id="readingCommentary" class="reading-commentary"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Библиотека Three.js для 3D -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script src="./iching_data.js"></script>
+  <script src="./larichev_data.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
 </html>
-
