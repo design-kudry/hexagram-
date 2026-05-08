@@ -1,26 +1,28 @@
-:root{
+:root {
   --bg: #f4f4f4;
   --text: #101010;
   --muted: #606060;
   --line: #101010;
 }
 
-*{ box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-body{
+body {
   margin: 0;
   font-family: "Helvetica Neue", "Inter", "Arial", sans-serif;
   background: var(--bg);
   color: var(--text);
 }
 
-.app{
+.app {
   max-width: 1120px;
   margin: 72px auto;
   padding: 0 24px 48px;
 }
 
-.hero{
+.hero {
   margin-bottom: 64px;
   display: flex;
   flex-direction: column;
@@ -28,7 +30,7 @@ body{
   gap: 20px;
 }
 
-.title{
+.title {
   margin: 0;
   font-size: clamp(56px, 8.3vw, 120px);
   line-height: 0.9;
@@ -38,7 +40,7 @@ body{
   word-break: normal;
 }
 
-.subtitle{
+.subtitle {
   margin: 0;
   font-size: 17px;
   font-weight: 400;
@@ -46,82 +48,44 @@ body{
   color: #101010;
 }
 
-.cast-layout{
+.cast-layout {
   display: grid;
   grid-template-columns: 1fr 194px;
   gap: 72px;
   align-items: start;
 }
 
-.cast-left{
+.cast-left {
   max-width: 680px;
 }
 
-.coin-stage{
+.coin-stage {
   margin-bottom: 64px;
 }
 
-.coins{
+.coins {
   display: flex;
-  gap: 30px;
+  gap: 6px;
   perspective: 1200px;
 }
 
-.coin{
-  width: 194px;
-  height: 194px;
-  border-radius: 0;
-  border: 0;
-  position: relative;
+.coin-3d-wrapper {
+  width: 224px;
+  height: 224px;
   background: transparent;
-  user-select: none;
-  transform-style: preserve-3d;
-  will-change: transform, filter;
-  filter: none;
-}
-
-.coin.is-spinning{
-  filter: none;
-}
-
-.coin-inner{
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  will-change: transform;
-  transform: rotateX(6deg) rotateY(0deg);
-}
-
-.coin-face{
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  color: #101010;
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 1;
   border-radius: 0;
-  backface-visibility: hidden;
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  transform: translateZ(3px);
+  overflow: visible;
+  position: relative;
 }
 
-.coin-back{
-  transform: rotateY(180deg) translateZ(3px);
-}
-
-.controls{
+.controls {
   margin: 0 0 48px;
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.btn{
+.btn {
   appearance: none;
   border: 0;
   border-radius: 0;
@@ -142,30 +106,32 @@ body{
   gap: 8px;
 }
 
-.btn:active{ transform: translateY(0); }
-.btn:disabled{
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn:disabled {
   opacity: 0.35;
   cursor: default;
 }
 
-.btn-secondary{
+.btn-secondary {
   background: transparent;
   color: #0a0a0a;
   border: 1px solid #d9d9d9;
 }
 
-.hexagram{
+.hexagram {
   width: 194px;
   height: 194px;
   padding: 0;
   background: transparent;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.reading{
+.reading {
   margin-top: 0;
   width: 100%;
   max-width: 1073px;
@@ -173,15 +139,15 @@ body{
   padding-top: 48px;
 }
 
-.reading.hidden{
+.reading.hidden {
   display: none;
 }
 
-.reading-head{
+.reading-head {
   margin-bottom: 24px;
 }
 
-.reading-meta{
+.reading-meta {
   margin: 0;
   font-size: 24px;
   font-weight: 500;
@@ -190,11 +156,11 @@ body{
   color: #101010;
 }
 
-.reading-content{
+.reading-content {
   max-width: 773px;
 }
 
-.reading-source{
+.reading-source {
   margin: 0 0 12px;
   font-size: 15px;
   font-weight: 400;
@@ -203,41 +169,41 @@ body{
   line-height: 22px;
 }
 
-.reading-aphorism{
+.reading-aphorism {
   margin: 0 0 24px;
   font-size: 17px;
   line-height: 22px;
 }
 
-.reading-commentary{
+.reading-commentary {
   margin: 0 0 24px;
   font-size: 17px;
   line-height: 22px;
   color: #101010;
 }
 
-.line{
+.line {
   position: relative;
   height: 10px;
   display: flex;
   align-items: center;
 }
 
-.line.empty{
+.line.empty {
   opacity: 0.24;
   border-top: 10px solid #101010;
   height: 10px;
   margin-top: 0;
 }
 
-.solid{
+.solid {
   width: 100%;
   height: 10px;
   background: var(--line);
   border-radius: 0;
 }
 
-.broken{
+.broken {
   width: 100%;
   height: 10px;
   display: flex;
@@ -245,97 +211,115 @@ body{
   gap: 18px;
 }
 
-.broken .segment{
+.broken .segment {
   flex: 1;
   height: 100%;
   background: var(--line);
   border-radius: 0;
 }
 
-@media (max-width: 860px){
-  .app{
+@media (max-width: 860px) {
+  .app {
     max-width: 430px;
     margin: 20px auto 0;
     padding: 16px 16px 28px;
   }
-  .hero{
+
+  .hero {
     margin-bottom: 48px;
     gap: 16px;
   }
-  .title{
+
+  .title {
     font-size: clamp(44px, 13.8vw, 72px);
     letter-spacing: -0.015em;
   }
-  .cast-layout{
+
+  .cast-layout {
     grid-template-columns: 1fr;
     gap: 48px;
     align-items: start;
   }
-  .cast-left{
+
+  .cast-left {
     max-width: 100%;
     width: 100%;
   }
-  .coin-stage{
+
+  .coin-stage {
     margin-bottom: 48px;
     width: 100%;
   }
-  .coins{
+
+  .coins {
     width: 100%;
     max-width: 400px;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
   }
-  .coin{
+
+  .coin-3d-wrapper {
     width: 100%;
     max-width: 126px;
     height: 126px;
     justify-self: center;
   }
-  .controls{
+
+  .controls {
     margin-top: 0;
     margin-bottom: 0;
     width: 100%;
     gap: 10px;
   }
-  .btn{
+
+  .btn {
     width: 152px;
     max-width: 152px;
     font-size: 16px;
   }
-  .hex-wrap{
+
+  .hex-wrap {
     justify-self: center;
     width: 100%;
     display: flex;
     justify-content: center;
   }
-  .hexagram{
+
+  .hexagram {
     width: 126px;
     height: 126px;
     padding: 0;
   }
-  .line{
+
+  .line {
     height: 10px;
   }
+
   .solid,
-  .broken{
+  .broken {
     height: 10px;
   }
-  .reading{
+
+  .reading {
     margin-top: 36px;
     padding-top: 36px;
   }
-  .reading-head{
+
+  .reading-head {
     margin-bottom: 28px;
   }
-  .reading-commentary{
+
+  .reading-commentary {
     margin-bottom: 28px;
   }
-  .reading-meta{
+
+  .reading-meta {
     font-size: 24px;
   }
+
   .reading-aphorism,
-  .reading-commentary{
+  .reading-commentary {
     font-size: 17px;
   }
 }
